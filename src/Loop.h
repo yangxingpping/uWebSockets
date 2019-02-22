@@ -81,7 +81,7 @@ private:
     static Loop *create(bool defaultLoop) {
         return ((Loop *) us_create_loop(defaultLoop, wakeupCb, preCb, postCb, sizeof(LoopData)))->init();
     }
-    static Loop* createEx(bool defaultLoop,void (*wakeupCb)(us_loop *loop) cwakeupCb){
+    static Loop* createEx(bool defaultLoop,void (*cwakeupCb)(us_loop *loop)){
         return ((Loop *) us_create_loop(defaultLoop, cwakeupCb, preCb, postCb, sizeof(LoopData)))->init();
     }
 public:
