@@ -81,10 +81,10 @@ private:
     static Loop *create(bool defaultLoop) {
         return ((Loop *) us_create_loop(defaultLoop, wakeupCb, preCb, postCb, sizeof(LoopData)))->init();
     }
-    static Loop* createEx(bool defaultLoop,void (*cwakeupCb)(us_loop *loop)){
+public:
+static Loop* createEx(bool defaultLoop,void (*cwakeupCb)(us_loop *loop)){
         return ((Loop *) us_create_loop(defaultLoop, cwakeupCb, preCb, postCb, sizeof(LoopData)))->init();
     }
-public:
     /* Returns the default loop if called from one thread, or a dedicated per-thread loop if called from multiple threads */
     static Loop *defaultLoop() {
         /* Deliver and attach the default loop to the first thread who calls us */
