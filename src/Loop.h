@@ -32,16 +32,11 @@ private:
         LoopData *loopData = (LoopData *) us_loop_ext(loop);
 
         /* Swap current deferQueue */
-        loopData->deferMutex.lock();
-        int oldDeferQueue = loopData->currentDeferQueue;
-        loopData->currentDeferQueue = (loopData->currentDeferQueue + 1) % 2;
-        loopData->deferMutex.unlock();
 
         /* Drain the queue */
-        for (auto &x : loopData->deferQueues[oldDeferQueue]) {
+        for (auto &x : loopData->deferQueues[0]) {
             x();
         }
-        loopData->deferQueues[oldDeferQueue].clear();
     }
 
     static void preCb(us_loop *loop) {
@@ -141,10 +136,8 @@ static Loop* createEx(bool defaultLoop,void (*cwakeupCb)(us_loop *loop)){
     void defer(fu2::unique_function<void()> &&cb) {
         LoopData *loopData = (LoopData *) us_loop_ext((us_loop *) this);
 
-        //if (std::thread::get_id() == ) // todo: add fast path for same thread id
-        loopData->deferMutex.lock();
-        loopData->deferQueues[loopData->currentDeferQueue].emplace_back(std::move(cb));
-        loopData->deferMutex.unlock();
+        loopData->deferQueues[0].emplace_back(std::move(cb));
+
 
         us_wakeup_loop((us_loop *) this);
     }
