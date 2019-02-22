@@ -137,9 +137,6 @@ static Loop* createEx(bool defaultLoop,void (*cwakeupCb)(us_loop *loop)){
         LoopData *loopData = (LoopData *) us_loop_ext((us_loop *) this);
 
         loopData->deferQueues[0].emplace_back(std::move(cb));
-
-
-        us_wakeup_loop((us_loop *) this);
     }
 
     /* Actively block and run this loop */
