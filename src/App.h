@@ -81,6 +81,10 @@ public:
     TemplatedApp(us_new_socket_context_options_t options = {}) {
         httpContext = uWS::HttpContext<SSL>::create(uWS::Loop::defaultLoop(), options);
     }
+    TemplatedApp(uWS::Loop* loop, us_new_socket_context_options_t options = {}){
+        assert(loop);
+        httpContext = uWS::HttpContext<SSL>::create(loop, options);
+    }
 
     bool constructorFailed() {
         return !httpContext;
